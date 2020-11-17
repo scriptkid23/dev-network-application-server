@@ -35,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Entry points
         http.cors().and().csrf().disable().authorizeRequests()//
-                .antMatchers("/api/auth/signin").permitAll()//
-                .antMatchers("/api/auth/signup").permitAll()//
+                .antMatchers("/api/v1/auth/signin").permitAll()//
+                .antMatchers("/api/v1/auth/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/api/score/helloworld").permitAll()
                 // Disallow everything else..
@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:3000")); // www - obligatory
+        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:4200")); // www - obligatory
 //        configuration.setAllowedOrigins(ImmutableList.of("*"));  //set access from all domains
         configuration.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
