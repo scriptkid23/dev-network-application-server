@@ -1,11 +1,13 @@
 package com.nuchat.capricorn.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -21,6 +23,17 @@ public class User {
     private String phone_number;
     private Date create_at;
     private Date update_at;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Messages> messages;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Participants> participants;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Conversation> conversations;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "primaryKey.user",cascade = CascadeType.ALL)
+    private Collection<UserContact> user_contact;
+
+
 
 
     @ElementCollection(fetch = FetchType.EAGER)
