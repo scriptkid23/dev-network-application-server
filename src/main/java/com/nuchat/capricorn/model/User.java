@@ -19,6 +19,9 @@ public class User {
     private String avatar;
     private String bio;
     private String phone_number;
+    private Date create_at;
+    private Date update_at;
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
