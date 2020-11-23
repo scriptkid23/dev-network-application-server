@@ -23,7 +23,7 @@ public class User{
     private String phone_number;
     private Date create_at;
     private Date update_at;
-
+    private boolean is_present;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
     private Collection<Messages> messages;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
@@ -112,6 +112,14 @@ public class User{
 
     public String getBio() {
         return bio;
+    }
+
+    public boolean isIs_present() {
+        return is_present;
+    }
+
+    public void setIs_present(boolean is_present) {
+        this.is_present = is_present;
     }
 
     public void setBio(String bio) {

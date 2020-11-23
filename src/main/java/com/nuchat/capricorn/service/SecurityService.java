@@ -60,7 +60,11 @@ public class SecurityService {
         }
         return user;
     }
+    public void setIsPresent(User user, Boolean stat) {
+        user.setIs_present(stat);
 
+        userRepository.save(user);
+    }
     public User whoami(HttpServletRequest req) {
         return userRepository.findByEmail(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
