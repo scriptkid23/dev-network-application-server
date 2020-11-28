@@ -55,7 +55,7 @@ public class SecurityService {
     }
 
     public User search(String email) {
-        User user  = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
         }

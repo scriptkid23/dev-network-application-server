@@ -7,7 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class User{
+@Table(name ="users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,15 +25,9 @@ public class User{
     private Date create_at;
     private Date update_at;
     private boolean is_present;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
-    private Collection<Messages> messages;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
-    private Collection<Participants> participants;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
-    private Collection<Conversation> conversations;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "primaryKey.user",cascade = CascadeType.ALL)
-    private Collection<UserContact> user_contact;
 
+    @OneToMany(fetch =  FetchType.LAZY,mappedBy = "primaryKey.user",cascade = CascadeType.ALL)
+    private Collection<UserContact> user_contact;
 
     public void setCreate_at(Date create_at) {
         this.create_at = create_at;
@@ -63,6 +58,15 @@ public class User{
     public Integer getId() {
         return id;
     }
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Messages> messages;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Participants> participants;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Conversation> conversations;
 
     public void setId(Integer id) {
         this.id = id;

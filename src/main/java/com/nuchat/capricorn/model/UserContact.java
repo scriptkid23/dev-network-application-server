@@ -1,9 +1,6 @@
 package com.nuchat.capricorn.model;
 
-import io.swagger.models.auth.In;
-
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @AssociationOverrides({
@@ -27,8 +24,8 @@ public class UserContact{
     public User getUser(){
         return getPrimaryKey().getUser();
     }
-    public void setUser(User user){
-        getPrimaryKey().setUser(user);
+    public void setUser(User users){
+        getPrimaryKey().setUser(users);
     }
     @Transient
     public Contacts getContact(){

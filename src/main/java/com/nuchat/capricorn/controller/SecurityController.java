@@ -4,7 +4,6 @@ import com.nuchat.capricorn.dto.*;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.service.SecurityService;
-import io.swagger.models.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
