@@ -2,9 +2,8 @@ package com.nuchat.capricorn.service;
 
 import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.exception.CustomException;
-import com.nuchat.capricorn.model.User;
+import com.nuchat.capricorn.model.Users;
 import com.nuchat.capricorn.repository.UserRepository;
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,12 +39,12 @@ public class SecurityService {
         }
     }
 
-    public String signup(User user) {
+    public String signup(Users users) {
 
-        if (!userRepository.existsByEmail(user.getEmail())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+        if (!userRepository.existsByEmail(users.getEmail())) {
+            users.setPassword(passwordEncoder.encode(users.getPassword()));
+            userRepository.save(users);
+            return jwtTokenProvider.createToken(users.getEmail(), users.getRoles());
         } else {
             throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -54,19 +53,19 @@ public class SecurityService {
         userRepository.deleteByEmail(email);
     }
 
-    public User search(String email) {
-        User user  = userRepository.findByEmail(email);
-        if (user == null) {
+    public Users search(String email) {
+        Users users = userRepository.findByEmail(email);
+        if (users == null) {
             throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
         }
-        return user;
+        return users;
     }
-    public void setIsPresent(User user, Boolean stat) {
-        user.setIs_present(stat);
+    public void setIsPresent(Users users, Boolean stat) {
+        users.setIs_present(stat);
 
-        userRepository.save(user);
+        userRepository.save(users);
     }
-    public User whoami(HttpServletRequest req) {
+    public Users whoami(HttpServletRequest req) {
         return userRepository.findByEmail(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
 

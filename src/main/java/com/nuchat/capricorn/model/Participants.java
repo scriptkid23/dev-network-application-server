@@ -2,7 +2,6 @@ package com.nuchat.capricorn.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 public class Participants {
@@ -18,7 +17,7 @@ public class Participants {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
     @ManyToOne
     @JoinColumn(name = "conversation_id")

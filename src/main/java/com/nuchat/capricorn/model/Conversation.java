@@ -23,7 +23,7 @@ public class Conversation {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
 
 

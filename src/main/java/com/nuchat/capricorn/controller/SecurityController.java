@@ -2,9 +2,8 @@ package com.nuchat.capricorn.controller;
 
 import com.nuchat.capricorn.dto.*;
 import com.nuchat.capricorn.exception.CustomException;
-import com.nuchat.capricorn.model.User;
+import com.nuchat.capricorn.model.Users;
 import com.nuchat.capricorn.service.SecurityService;
-import io.swagger.models.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,7 @@ public class SecurityController {
     public ResponseEntity<?> signup(@RequestBody SignupRequestDTO newUser){
         try {
             SignupResponseDTO signupResponseDTO = new SignupResponseDTO();
-            signupResponseDTO.setToken(securityService.signup(modelMapper.map(newUser, User.class)));
+            signupResponseDTO.setToken(securityService.signup(modelMapper.map(newUser, Users.class)));
             signupResponseDTO.setEmail(newUser.getEmail());
             signupResponseDTO.setId(newUser.getId());
             return new ResponseEntity<>(signupResponseDTO, HttpStatus.OK);
@@ -49,7 +48,7 @@ public class SecurityController {
         }
     }
     @GetMapping("/me")
-    public User getUserDetail(HttpServletRequest req){
+    public Users getUserDetail(HttpServletRequest req){
         return securityService.whoami(req);
     }
 }

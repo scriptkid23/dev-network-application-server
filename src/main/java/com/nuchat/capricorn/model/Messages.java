@@ -3,7 +3,6 @@ package com.nuchat.capricorn.model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 public class Messages {
@@ -25,7 +24,7 @@ public class Messages {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "messages",cascade = CascadeType.ALL)
     private Collection<Attachments> attachments;
