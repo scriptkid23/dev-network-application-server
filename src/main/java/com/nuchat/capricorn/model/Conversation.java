@@ -37,11 +37,11 @@ public class Conversation {
         this.channel_id = channel_id;
     }
 
-    public void setCreated_at(Timestamp created_at) {
+    public void setCreated_at( Date created_at) {
         this.created_at = created_at;
     }
 
-    public void setUpdated_at(Timestamp updated_at) {
+    public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
 
