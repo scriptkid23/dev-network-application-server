@@ -7,7 +7,7 @@ import java.util.Collection;
 @Entity
 public class Conversation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;

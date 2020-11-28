@@ -8,7 +8,9 @@ import java.util.List;
 @Entity
 public class Messages {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String guid;
 
 
