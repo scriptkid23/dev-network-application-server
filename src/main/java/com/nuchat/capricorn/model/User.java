@@ -7,7 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Users {
+@Table(name ="users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,16 +25,9 @@ public class Users {
     private Date create_at;
     private Date update_at;
     private boolean is_present;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "users",cascade = CascadeType.ALL)
-    private Collection<Messages> messages;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "users",cascade = CascadeType.ALL)
-    private Collection<Participants> participants;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "users",cascade = CascadeType.ALL)
-    private Collection<Conversation> conversations;
 
-    @OneToMany(mappedBy = "primaryKey.user",cascade = CascadeType.ALL)
+    @OneToMany(fetch =  FetchType.LAZY,mappedBy = "primaryKey.user",cascade = CascadeType.ALL)
     private Collection<UserContact> user_contact;
-
 
 
 
@@ -42,6 +36,15 @@ public class Users {
     public Integer getId() {
         return id;
     }
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Messages> messages;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Participants> participants;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Conversation> conversations;
 
     public void setId(Integer id) {
         this.id = id;

@@ -8,25 +8,25 @@ import java.util.Collection;
 public class Messages {
     @Id
     private Integer id;
+
     private String guid;
 
-
-    @Column(columnDefinition = "ENUM('TEXT','IMAGE','VIDEO','AUDIO')")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private MessageType message_type;
 
     private String message;
     private Timestamp created_at;
 
-    @ManyToOne
-    @JoinColumn(name = "conversation_id")
-    private Conversation conversation;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users users;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "messages",cascade = CascadeType.ALL)
     private Collection<Attachments> attachments;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "conversation_id")
+    private Conversation conversation;
 
 }

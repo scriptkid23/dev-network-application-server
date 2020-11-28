@@ -1,7 +1,7 @@
 package com.nuchat.capricorn.service;
 
 import com.nuchat.capricorn.exception.CustomException;
-import com.nuchat.capricorn.model.Users;
+import com.nuchat.capricorn.model.User;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -37,8 +37,8 @@ public class UserPresenceService implements ChannelInterceptor,IUserPresenceServ
     }
     private void toggleUserPresence(String userEmail, Boolean isPresent) {
         try {
-            Users users = securityService.search(userEmail);
-            securityService.setIsPresent(users, isPresent);
+            User user = securityService.search(userEmail);
+            securityService.setIsPresent(user, isPresent);
         } catch (BeansException | CustomException e) {
             e.printStackTrace();
         }

@@ -21,10 +21,10 @@ public class UserContact{
     }
 
     @Transient
-    public Users getUser(){
+    public User getUser(){
         return getPrimaryKey().getUser();
     }
-    public void setUser(Users users){
+    public void setUser(User users){
         getPrimaryKey().setUser(users);
     }
     @Transient

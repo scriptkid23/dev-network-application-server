@@ -1,14 +1,14 @@
 package com.nuchat.capricorn.repository;
 
-import com.nuchat.capricorn.model.Users;
+import com.nuchat.capricorn.model.User;
 import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 
-public interface UserRepository extends CrudRepository<Users, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
     boolean existsByEmail(String email);
 
     boolean existsById(Integer id);
-    Users findByEmail(String email);
+    User findByEmail(String email);
 
 
     @Transactional

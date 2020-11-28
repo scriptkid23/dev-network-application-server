@@ -8,15 +8,15 @@ import java.io.Serializable;
 
 @Embeddable
 public class UserContactId implements Serializable{
-    private Users users;
+    private User user;
     private Contacts contacts;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    public Users getUser(){
-        return users;
+    public User getUser(){
+        return user;
     }
-    public void setUser(Users users){
-        this.users = users;
+    public void setUser(User users){
+        this.user = users;
     }
     @ManyToOne(cascade = CascadeType.ALL)
     public Contacts getContacts(){

@@ -1,19 +1,19 @@
 package com.nuchat.capricorn.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 public class Conversation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
     private String channel_id;
-    private Timestamp created_at;
-    private Timestamp updated_at;
+    private Date created_at;
+    private Date updated_at;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "conversation",cascade = CascadeType.ALL)
     private Collection<Participants> participants;
@@ -23,7 +23,7 @@ public class Conversation {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users users;
+    private User user;
 
 
 
