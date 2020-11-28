@@ -4,6 +4,7 @@ import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.repository.UserRepository;
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,7 +42,7 @@ public class SecurityService {
 
     public String signup(User user) {
 
-        if (!userRepository.existsByEmail(user.getEmail()) && !userRepository.existsById(user.getId())) {
+        if (!userRepository.existsByEmail(user.getEmail())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());

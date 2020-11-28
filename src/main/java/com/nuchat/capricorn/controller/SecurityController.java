@@ -22,7 +22,7 @@ public class SecurityController {
     @Autowired
     ModelMapper modelMapper;
 
-    @PostMapping("/sigin")
+    @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody SigninRequestDTO user) {
             try {
                 SigninResponseDTO signinResponseDTO = new SigninResponseDTO(
