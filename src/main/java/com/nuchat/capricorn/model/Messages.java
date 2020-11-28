@@ -32,4 +32,35 @@ public class Messages {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "messages",cascade = CascadeType.ALL)
     private Collection<Attachments> attachments;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public void setMessage_type(MessageType message_type) {
+        this.message_type = message_type;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setAttachments(Collection<Attachments> attachments) {
+        this.attachments = attachments;
+    }
 }

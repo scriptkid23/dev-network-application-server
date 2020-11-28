@@ -25,7 +25,35 @@ public class Conversation {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public void setChannel_id(String channel_id) {
+        this.channel_id = channel_id;
+    }
 
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
+    public void setUpdated_at(Timestamp updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public void setParticipants(Collection<Participants> participants) {
+        this.participants = participants;
+    }
+
+    public void setMessages(Collection<Messages> messages) {
+        this.messages = messages;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

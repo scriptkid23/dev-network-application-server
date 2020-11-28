@@ -34,7 +34,29 @@ public class User{
     private Collection<UserContact> user_contact;
 
 
+    public void setCreate_at(Date create_at) {
+        this.create_at = create_at;
+    }
 
+    public void setUpdate_at(Date update_at) {
+        this.update_at = update_at;
+    }
+
+    public void setMessages(Collection<Messages> messages) {
+        this.messages = messages;
+    }
+
+    public void setParticipants(Collection<Participants> participants) {
+        this.participants = participants;
+    }
+
+    public void setConversations(Collection<Conversation> conversations) {
+        this.conversations = conversations;
+    }
+
+    public void setUser_contact(Collection<UserContact> user_contact) {
+        this.user_contact = user_contact;
+    }
 
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;

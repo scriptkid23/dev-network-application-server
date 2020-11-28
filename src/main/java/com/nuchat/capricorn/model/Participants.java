@@ -23,4 +23,24 @@ public class Participants {
     @ManyToOne
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setType(ParticipantType type) {
+        this.type = type;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+    }
 }
