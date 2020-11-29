@@ -11,7 +11,7 @@ import java.util.Date;
 
 @RestController
 public class DemoController {
-    @MessageMapping("/chat")
+    @MessageMapping("/ws")
     @SendTo("/topic/messages")
     public OutputMessage send(Message message) throws Exception{
         final String time = new SimpleDateFormat("HH:mm").format(new Date());

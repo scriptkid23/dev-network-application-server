@@ -14,14 +14,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
-
-    private final int OUTBOUND_CHANNEL_CORE_POOL_SIZE = 8;
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config){
         // endpoint để publish các subscribe
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topic","/queue");
         config.setApplicationDestinationPrefixes("/app");
     }
     @Override
@@ -29,6 +25,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //        registry.addEndpoint("/chat");
         // endpoint để bắt tay với websocket
         registry.addEndpoint("/ws")
-                .withSockJS();
+                .setAllowedOrigins("http://127.0.0.1:5500")
+                .withSockJS()
+                .setWebSocketEnabled(false)
+                .setSessionCookieNeeded(false);
     }
 }
