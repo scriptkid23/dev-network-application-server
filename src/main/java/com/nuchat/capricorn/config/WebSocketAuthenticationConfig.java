@@ -32,6 +32,8 @@ import java.util.Objects;
 @EnableWebSocketMessageBroker
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketAuthenticationConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final int OUTBOUND_CHANNEL_CORE_POOL_SIZE = 8;
     private static final Logger logger = LoggerFactory.getLogger(WebSocketAuthenticationConfig.class);
 
     @Autowired
@@ -48,9 +50,10 @@ public class WebSocketAuthenticationConfig implements WebSocketMessageBrokerConf
         registration.interceptors((new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message,StompHeaderAccessor.class);
+                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
                 logger.info("************ STOMP COMMAND *****"+accessor.getCommand());
                 logger.info("STOMP access destination "+accessor.getDestination());
+                System.out.println(accessor.getDestination());
                 if(StompCommand.CONNECT.equals(accessor.getCommand())){
                     List<String> authorization = accessor.getNativeHeader("Authorization");
                     logger.debug("Authorization:{}",authorization);
@@ -119,4 +122,5 @@ public class WebSocketAuthenticationConfig implements WebSocketMessageBrokerConf
             }
         }));
     }
+
 }
