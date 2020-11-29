@@ -37,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()//
                 .antMatchers("/api/v1/auth/signin").permitAll()//
                 .antMatchers("/api/v1/auth/signup").permitAll()//
-                .antMatchers("/h2-console/**/**").permitAll()
+                .antMatchers("/h2-console/**/**").permitAll()//
+                .antMatchers("/ws/**").permitAll()//
                 .antMatchers("/api/score/helloworld").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
@@ -83,11 +84,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:4200")); // www - obligatory
+        configuration.setAllowedOrigins(ImmutableList.of("http://127.0.0.1:5500")); // www - obligatory
 //        configuration.setAllowedOrigins(ImmutableList.of("*"));  //set access from all domains
         configuration.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type","X-Authorization"));
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

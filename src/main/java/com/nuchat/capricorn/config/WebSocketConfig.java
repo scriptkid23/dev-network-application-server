@@ -1,59 +1,34 @@
 package com.nuchat.capricorn.config;
 
 
-import com.nuchat.capricorn.service.UserPresenceService;
-import org.springframework.context.annotation.Bean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
 @EnableWebSocketMessageBroker
-
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
     private final int OUTBOUND_CHANNEL_CORE_POOL_SIZE = 8;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config){
-        config.enableSimpleBroker("/topic/","/queue/");
+        // endpoint để publish các subscribe
+        config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
-
     }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/broadcast");
-        registry.addEndpoint("/broadcast").withSockJS().setHeartbeatTime(60_000);
-
-        registry.addEndpoint("/chat");
-        registry.addEndpoint("/chat").withSockJS();
+//        registry.addEndpoint("/chat");
+        // endpoint để bắt tay với websocket
+        registry.addEndpoint("/ws")
+                .withSockJS();
     }
-    @Bean
-    public UserPresenceService presenceChannelInterceptor(){
-        return new UserPresenceService();
-    }
-
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(presenceChannelInterceptor());
-    }
-
-
-    @Override
-    public void configureClientOutboundChannel(ChannelRegistration registration) {
-        registration.taskExecutor().corePoolSize(OUTBOUND_CHANNEL_CORE_POOL_SIZE);
-        registration.interceptors(presenceChannelInterceptor());
-    }
-
-    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-        messages.simpDestMatchers("/*").authenticated();
-    }
-    
-
-
 }
