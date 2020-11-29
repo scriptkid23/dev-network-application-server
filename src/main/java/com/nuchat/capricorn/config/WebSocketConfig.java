@@ -27,11 +27,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/broadcast");
-        registry.addEndpoint("/broadcast").withSockJS().setHeartbeatTime(60_000);
 
-        registry.addEndpoint("/chat");
-        registry.addEndpoint("/chat").withSockJS();
+        registry.addEndpoint("/chat")
+                .setAllowedOrigins("http://127.0.0.1:5500")
+                .withSockJS()
+                .setWebSocketEnabled(false)
+                .setSessionCookieNeeded(false);
     }
     @Bean
     public UserPresenceService presenceChannelInterceptor(){
