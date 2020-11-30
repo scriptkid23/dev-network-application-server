@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/auth/signin").permitAll()//
                 .antMatchers("/api/v1/auth/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
-                .antMatchers("/chat/**").permitAll()
+                .antMatchers("/ws/**").permitAll()
                 .antMatchers("/api/score/helloworld").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
