@@ -1,7 +1,4 @@
 package com.nuchat.capricorn.config;
-
-
-import com.nuchat.capricorn.service.UserPresenceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -28,33 +25,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 
-        registry.addEndpoint("/chat")
-                .setAllowedOrigins("http://127.0.0.1:5500")
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:4200")
                 .withSockJS()
                 .setWebSocketEnabled(false)
                 .setSessionCookieNeeded(false);
     }
-    @Bean
-    public UserPresenceService presenceChannelInterceptor(){
-        return new UserPresenceService();
-    }
-
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(presenceChannelInterceptor());
-    }
-
-
-    @Override
-    public void configureClientOutboundChannel(ChannelRegistration registration) {
-        registration.taskExecutor().corePoolSize(OUTBOUND_CHANNEL_CORE_POOL_SIZE);
-        registration.interceptors(presenceChannelInterceptor());
-    }
-
-    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-        messages.simpDestMatchers("/*").authenticated();
-    }
-    
-
-
 }
