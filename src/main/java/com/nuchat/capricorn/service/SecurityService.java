@@ -1,10 +1,12 @@
 package com.nuchat.capricorn.service;
 
 import com.nuchat.capricorn.config.JwtTokenProvider;
+import com.nuchat.capricorn.config.WebSocketAuthInfo;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Service
 public class SecurityService {
@@ -72,4 +75,5 @@ public class SecurityService {
     public String refresh(String email) {
         return jwtTokenProvider.createToken(email, userRepository.findByEmail(email).getRoles());
     }
+
 }

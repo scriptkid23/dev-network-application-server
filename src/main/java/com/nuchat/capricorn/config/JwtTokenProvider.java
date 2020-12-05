@@ -1,5 +1,6 @@
 package com.nuchat.capricorn.config;
 
+import java.io.Serializable;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements Serializable {
 
     /**
      * THIS IS NOT A SECURE PRACTICE! For simplicity, we are storing a static key here. Ideally, in a

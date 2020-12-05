@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -39,12 +41,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/auth/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/ws/**").permitAll()
+                .antMatchers("/api/v1/auth/token/message").permitAll()
                 .antMatchers("/api/score/helloworld").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");
+
 
         // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
