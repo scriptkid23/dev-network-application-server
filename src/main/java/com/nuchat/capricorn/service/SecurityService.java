@@ -2,9 +2,12 @@ package com.nuchat.capricorn.service;
 
 import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketAuthInfo;
+import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,7 @@ public class SecurityService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
     public String signin(String email, String password) {
         try {
@@ -69,6 +73,7 @@ public class SecurityService {
         userRepository.save(user);
     }
     public User whoami(HttpServletRequest req) {
+        logger.info(jwtTokenProvider.resolveToken(req));
         return userRepository.findByEmail(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
 

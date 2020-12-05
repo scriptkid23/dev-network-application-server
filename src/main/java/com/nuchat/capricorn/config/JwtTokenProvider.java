@@ -28,17 +28,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
-public class JwtTokenProvider implements Serializable {
+public class JwtTokenProvider{
 
     /**
      * THIS IS NOT A SECURE PRACTICE! For simplicity, we are storing a static key here. Ideally, in a
      * microservices environment, this key would be kept on a config-server.
      */
-    @Value("${security.jwt.token.secret-key:secret-key}")
-    private static final String secretKey = "sec324ret234ke5fg6yf7dgo5fhg6fh43m5e";
 
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private static final long validityInMilliseconds = 86400000L; // 24h
+    private String secretKey = "sec324ret234ke5fg6yf7dgo5fhg6fh43m5e";
+    private long validityInMilliseconds = 86400000L; // 24h
 
     @Autowired
     private MyUserDetails myUserDetails;

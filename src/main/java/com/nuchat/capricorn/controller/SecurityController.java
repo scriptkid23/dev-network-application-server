@@ -21,17 +21,17 @@ import java.util.UUID;
 @RequestMapping("/api/v1/auth")
 public class SecurityController {
 
-    final Cache authCahe;
+//    final Cache authCahe;
 
     @Autowired
     SecurityService securityService;
     @Autowired
     ModelMapper modelMapper;
 
-    @Autowired
-    public  SecurityController(CacheManager cacheManager){
-        this.authCahe = cacheManager.getCache("AuthCache");
-    }
+//    @Autowired
+//    public  SecurityController(CacheManager cacheManager){
+//        this.authCahe = cacheManager.getCache("AuthCache");
+//    }
 
 
     @PostMapping("/signin")
@@ -65,12 +65,16 @@ public class SecurityController {
         return securityService.whoami(req);
     }
 
-    @PostMapping("/token/message")
-    public UUID getTokenMessage(){
-
-        UUID websocketAuthToken = UUID.randomUUID();
-        WebSocketAuthInfo webSocketAuthInfo = new WebSocketAuthInfo(websocketAuthToken);
-        authCahe.put(websocketAuthToken,webSocketAuthInfo);
-        return websocketAuthToken;
+    @GetMapping("/demo")
+    public void demo(){
+        System.out.println("dmeo");
     }
+//    @PostMapping("/token/message")
+//    public UUID getTokenMessage(){
+//
+//        UUID websocketAuthToken = UUID.randomUUID();
+//        WebSocketAuthInfo webSocketAuthInfo = new WebSocketAuthInfo(websocketAuthToken);
+//        authCahe.put(websocketAuthToken,webSocketAuthInfo);
+//        return websocketAuthToken;
+//    }
 }

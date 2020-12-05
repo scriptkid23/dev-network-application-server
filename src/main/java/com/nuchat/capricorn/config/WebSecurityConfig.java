@@ -21,7 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -41,8 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/auth/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/ws/**").permitAll()
-                .antMatchers("/api/v1/auth/token/message").permitAll()
-                .antMatchers("/api/score/helloworld").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
