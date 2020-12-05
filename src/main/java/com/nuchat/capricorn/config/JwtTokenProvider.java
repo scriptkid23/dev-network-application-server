@@ -35,8 +35,11 @@ public class JwtTokenProvider{
      * microservices environment, this key would be kept on a config-server.
      */
 
-    private String secretKey = "sec324ret234ke5fg6yf7dgo5fhg6fh43m5e";
-    private long validityInMilliseconds = 86400000L; // 24h
+    @Value("${security.jwt.token.secret-key:secret-key}")
+    private static final String secretKey = "sec324ret234ke5fg6yf7dgo5fhg6fh43m5e";
+
+    @Value("${security.jwt.token.expire-length:3600000}")
+    private static final long validityInMilliseconds = 86400000L; // 24h
 
     @Autowired
     private MyUserDetails myUserDetails;
@@ -54,7 +57,7 @@ public class JwtTokenProvider{
                 .setClaims(claims)//
                 .setIssuedAt(now)//
                 .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))//
+                .signWith(SignatureAlgorithm.HS256, secretKey)//
                 .compact();
     }
 
