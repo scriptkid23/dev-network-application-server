@@ -1,5 +1,6 @@
 package com.nuchat.capricorn.config;
 
+import java.io.Serializable;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -27,12 +28,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider{
 
     /**
      * THIS IS NOT A SECURE PRACTICE! For simplicity, we are storing a static key here. Ideally, in a
      * microservices environment, this key would be kept on a config-server.
      */
+
     @Value("${security.jwt.token.secret-key:secret-key}")
     private static final String secretKey = "sec324ret234ke5fg6yf7dgo5fhg6fh43m5e";
 
@@ -55,7 +57,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)//
                 .setIssuedAt(now)//
                 .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))//
+                .signWith(SignatureAlgorithm.HS256, secretKey)//
                 .compact();
     }
 
