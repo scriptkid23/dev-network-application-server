@@ -2,10 +2,12 @@ package com.nuchat.capricorn.controller;
 
 import com.nuchat.capricorn.dto.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -14,9 +16,11 @@ public class GreetingController {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Message greeting(Message message) throws Exception{
-        return  message;
-
+    public void processMessage(@Payload Message message)throws Exception{
+        messagingTemplate.convertAndSendToUser(
+                message.getRoomid(),
+                "/queue/messages",
+                message
+        );
     }
 }
