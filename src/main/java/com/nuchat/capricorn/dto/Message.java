@@ -4,6 +4,7 @@ public class Message {
     private String username;
     private String message;
     private String roomid;
+    private String contactid;
 
     public Message(String username, String message, String roomid) {
         this.username = username;
@@ -33,5 +34,13 @@ public class Message {
 
     public String getRoomid() {
         return roomid;
+    }
+
+    public String getContactid() {
+        return contactid;
+    }
+
+    public void setContactid(String contactid) {
+        this.contactid = contactid;
     }
 }

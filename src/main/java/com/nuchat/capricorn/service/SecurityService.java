@@ -4,8 +4,11 @@ import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketAuthInfo;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.exception.CustomException;
+import com.nuchat.capricorn.model.Contacts;
 import com.nuchat.capricorn.model.User;
+import com.nuchat.capricorn.repository.ContactsRepository;
 import com.nuchat.capricorn.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +21,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
 public class SecurityService {
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    ContactsRepository contactsRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
-
     @Autowired
     JwtTokenProvider jwtTokenProvider;
-
+    @Autowired
+    ModelMapper modelMapper;
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -50,7 +55,10 @@ public class SecurityService {
 
         if (!userRepository.existsByEmail(user.getEmail())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setAvatar("https://storage-3t.herokuapp.com/uploads/avatar/001-unicorn.svg");
+            user.setCreate_at(new Date());
             userRepository.save(user);
+            contactsRepository.save(modelMapper.map(user,Contacts.class));
             return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
         } else {
             throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
