@@ -5,6 +5,7 @@ import com.nuchat.capricorn.dto.*;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.service.SecurityService;
+import com.nuchat.capricorn.service.SendEmailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
 import java.util.UUID;
@@ -27,6 +29,9 @@ public class SecurityController {
     SecurityService securityService;
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    SendEmailService sendEmailService;
 
     @Autowired
     public  SecurityController(CacheManager cacheManager){
@@ -53,7 +58,6 @@ public class SecurityController {
             SignupResponseDTO signupResponseDTO = new SignupResponseDTO();
             signupResponseDTO.setToken(securityService.signup(modelMapper.map(newUser, User.class)));
             signupResponseDTO.setEmail(newUser.getEmail());
-            signupResponseDTO.setId(newUser.getId());
             return new ResponseEntity<>(signupResponseDTO, HttpStatus.OK);
         }
         catch (CustomException e){
@@ -76,5 +80,12 @@ public class SecurityController {
         WebSocketAuthInfo webSocketAuthInfo = new WebSocketAuthInfo(websocketAuthToken);
         authCahe.put(websocketAuthToken,webSocketAuthInfo);
         return websocketAuthToken;
+    }
+
+    @PostMapping("/recovery/password")
+    public ResponseEntity<?> recoveryPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) throws MessagingException {
+        String token = securityService.refresh(forgotPasswordDTO.getEmail());
+
+        return new ResponseEntity<>(sendEmailService.sendEmail(forgotPasswordDTO.getEmail(),token),HttpStatus.OK);
     }
 }

@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.cors().and().csrf().disable().authorizeRequests()//
                 .antMatchers("/api/v1/auth/signin").permitAll()//
+                .antMatchers("/api/v1/auth/recovery/password").permitAll()//
                 .antMatchers("/api/v1/auth/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/ws/**").permitAll()
@@ -84,8 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOrigins(ImmutableList.of("http://127.0.0.1:5500")); // www - obligatory
+        configuration.setAllowedOrigins(ImmutableList.of("http://127.0.0.1:5500","http://127.0.0.1:3000","http://localhost:3000","https://nuzchat.herokuapp.com","http://nuzchat.herokuapp.com")); // www - obligatory
 //        configuration.setAllowedOrigins(ImmutableList.of("*"));  //set access from all domains
         configuration.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);

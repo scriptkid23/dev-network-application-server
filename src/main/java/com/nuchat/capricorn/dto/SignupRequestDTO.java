@@ -7,7 +7,6 @@ import com.nuchat.capricorn.model.Role;
 import java.util.List;
 
 public class SignupRequestDTO {
-    private Integer id;
 
     private String first_name;
     private String last_name;
@@ -39,14 +38,6 @@ public class SignupRequestDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getPassword() {
