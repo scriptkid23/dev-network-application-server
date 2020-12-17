@@ -35,7 +35,7 @@ public class SendEmailService {
         message.setTo(email);
         message.setSubject("Forgot Password");
 
-        String link = "https://nuzchat.herokuapp.com/auth/?token="+token;
+        String link = "https://nuzchat.herokuapp.com/auth/token/"+token;
         message.setText("If you've lost your password or wish to reset it, use the link to get started: "+link);
         quickService.submit(new Runnable() {
             @Override
