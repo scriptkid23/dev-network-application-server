@@ -88,4 +88,15 @@ public class SecurityController {
 
         return new ResponseEntity<>(sendEmailService.sendEmail(forgotPasswordDTO.getEmail(),token),HttpStatus.OK);
     }
+
+    @PostMapping("/token/confirm")
+    public ResponseEntity<?> tokenConfirm(@RequestBody TokenConfirm tokenConfirm) throws Exception{
+        try {
+            securityService.validateToken(tokenConfirm.getToken());
+            return new ResponseEntity<>(new MessageDTO(HttpStatus.OK,"Confirm password succeeded"),HttpStatus.OK);
+        }
+        catch (CustomException e){
+            return new ResponseEntity<>(new MessageDTO(HttpStatus.UNPROCESSABLE_ENTITY,e.getMessage()),HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
 }
