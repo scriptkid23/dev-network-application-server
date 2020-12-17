@@ -82,5 +82,8 @@ public class SecurityService {
     public String refresh(String email) {
         return jwtTokenProvider.createToken(email, userRepository.findByEmail(email).getRoles());
     }
+    public boolean validateToken(String token){
+        return jwtTokenProvider.validateToken(token);
+    }
 
 }
