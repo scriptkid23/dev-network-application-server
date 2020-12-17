@@ -32,6 +32,8 @@ public class SecurityService {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    SendEmailService sendEmailService;
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);

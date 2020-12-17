@@ -52,8 +52,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("http://127.0.0.1:5500");
-        registry.addEndpoint("/ws").setAllowedOrigins("http://127.0.0.1:5500").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins("http://127.0.0.1:5500","http://127.0.0.1:3000","http://localhost:3000","https://nuzchat.herokuapp.com","http://nuzchat.herokuapp.com");
+        registry.addEndpoint("/ws").setAllowedOrigins("http://127.0.0.1:5500","http://127.0.0.1:3000","http://localhost:3000","https://nuzchat.herokuapp.com","http://nuzchat.herokuapp.com").withSockJS();
     }
 
     @Override
