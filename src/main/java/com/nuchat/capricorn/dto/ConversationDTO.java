@@ -1,13 +1,12 @@
-package com.nuchat.capricorn.model;
+package com.nuchat.capricorn.dto;
 
-import javax.persistence.*;
+import com.nuchat.capricorn.model.Messages;
+import com.nuchat.capricorn.model.Participants;
+
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
-public class Conversation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ConversationDTO {
     private Integer id;
 
     private String title;
@@ -15,21 +14,17 @@ public class Conversation {
     private Date created_at;
     private Date updated_at;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "conversation",cascade = CascadeType.ALL)
     private Collection<Participants> participants;
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "conversation",cascade = CascadeType.ALL)
     private Collection<Messages> messages;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public Conversation(String title, String channel_id, Date created_at, User user) {
+    public ConversationDTO(Integer id, String title, String channel_id, Date created_at, Date updated_at, Collection<Participants> participants, Collection<Messages> messages) {
+        this.id = id;
         this.title = title;
         this.channel_id = channel_id;
         this.created_at = created_at;
-        this.user = user;
+        this.updated_at = updated_at;
+        this.participants = participants;
+        this.messages = messages;
     }
 
     public Integer getId() {
@@ -86,13 +81,5 @@ public class Conversation {
 
     public void setMessages(Collection<Messages> messages) {
         this.messages = messages;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
