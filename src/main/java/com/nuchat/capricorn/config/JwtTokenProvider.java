@@ -10,8 +10,14 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.nuchat.capricorn.dto.RevokeTokenDTO;
 import com.nuchat.capricorn.exception.CustomException;
+import com.nuchat.capricorn.model.RevokeToken;
 import com.nuchat.capricorn.model.Role;
+import com.nuchat.capricorn.repository.RevokeTokenRepository;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -43,7 +49,12 @@ public class JwtTokenProvider{
 
     @Autowired
     private MyUserDetails myUserDetails;
+    @Autowired
+    ModelMapper modelMapper;
+    @Autowired
+    private RevokeTokenRepository revokeTokenRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
     public String createToken(String username, List<Role> roles) {
 
@@ -80,8 +91,14 @@ public class JwtTokenProvider{
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
+            if(revokeTokenRepository.existsByToken(token)){
+                throw new CustomException("Token has been revoke",HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            else{
+                Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+                return true;
+            }
+
         } catch (JwtException | IllegalArgumentException e) {
             throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
         }

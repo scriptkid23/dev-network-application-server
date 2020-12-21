@@ -4,8 +4,11 @@ import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketAuthInfo;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.exception.CustomException;
+import com.nuchat.capricorn.model.RevokeToken;
 import com.nuchat.capricorn.model.User;
+import com.nuchat.capricorn.repository.RevokeTokenRepository;
 import com.nuchat.capricorn.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,11 @@ public class SecurityService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    RevokeTokenRepository revokeTokenRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
     @Autowired
     SendEmailService sendEmailService;
     @Autowired
@@ -84,6 +92,11 @@ public class SecurityService {
     }
     public boolean validateToken(String token){
         return jwtTokenProvider.validateToken(token);
+    }
+    public void revokeToken(String token){
+        RevokeToken revokeToken = new RevokeToken();
+        revokeToken.setToken(token);
+        revokeTokenRepository.save(revokeToken);
     }
 
 }
