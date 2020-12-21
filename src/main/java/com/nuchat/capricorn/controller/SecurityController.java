@@ -69,9 +69,9 @@ public class SecurityController {
         return securityService.whoami(req);
     }
 
-    @PostMapping("/revoke/token")
-    public ResponseEntity<?> revokenToken(@RequestBody RevokeTokenDTO token){
-        securityService.revokeToken(token.getToken());
+    @DeleteMapping("/revoke/token")
+    public ResponseEntity<?> revokenToken(HttpServletRequest req){
+        securityService.revokeToken(req);
         return new ResponseEntity<>("revoken token succeeded",HttpStatus.OK);
     }
     @GetMapping("/demo")

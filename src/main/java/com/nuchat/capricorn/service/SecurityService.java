@@ -93,9 +93,9 @@ public class SecurityService {
     public boolean validateToken(String token){
         return jwtTokenProvider.validateToken(token);
     }
-    public void revokeToken(String token){
+    public void revokeToken(HttpServletRequest req){
         RevokeToken revokeToken = new RevokeToken();
-        revokeToken.setToken(token);
+        revokeToken.setToken(jwtTokenProvider.resolveToken(req));
         revokeTokenRepository.save(revokeToken);
     }
 
