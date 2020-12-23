@@ -5,6 +5,7 @@ import com.nuchat.capricorn.config.WebSocketAuthInfo;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.RevokeToken;
+import com.nuchat.capricorn.model.Role;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.repository.RevokeTokenRepository;
 import com.nuchat.capricorn.repository.UserRepository;
@@ -21,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -44,6 +48,8 @@ public class SecurityService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+
+
     private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
     public String signin(String email, String password) {
@@ -59,6 +65,10 @@ public class SecurityService {
     public String signup(User user) {
 
         if (!userRepository.existsByEmail(user.getEmail())) {
+            user.setAvatar("https://storage-3t.herokuapp.com/uploads/avatar/016-unicorn.svg");
+            List<Role> roles = new ArrayList<Role>();
+            user.setCreate_at(new Date());
+            roles.add(Role.ROLE_MEMBER);user.setRoles(roles);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());

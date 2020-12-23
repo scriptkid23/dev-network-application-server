@@ -11,10 +11,7 @@ public class SignupRequestDTO {
     private String first_name;
     private String last_name;
     private String email;
-
     private String password;
-    private boolean gender;
-    private List<Role> roles;
 
     public String getFirst_name() {
         return first_name;
@@ -48,19 +45,4 @@ public class SignupRequestDTO {
         this.password = password;
     }
 
-    public boolean isGender() {
-        return gender;
-    }
-
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 }
