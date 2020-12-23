@@ -1,7 +1,6 @@
 package com.nuchat.capricorn.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -138,19 +137,19 @@ public class User {
         this.phone_number = phone_number;
     }
 
-    public Date getCreate_at() {
+    public Date getCreate_at_() {
         return create_at;
     }
 
-    public void setCreate_at(Date create_at) {
+    public void setCreate_at_(Date create_at) {
         this.create_at = create_at;
     }
 
-    public Date getUpdate_at() {
+    public Date getUpdate_at_() {
         return update_at;
     }
 
-    public void setUpdate_at(Date update_at) {
+    public void setUpdate_at_(Date update_at) {
         this.update_at = update_at;
     }
 }
