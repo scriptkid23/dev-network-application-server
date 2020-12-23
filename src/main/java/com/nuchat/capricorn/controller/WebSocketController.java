@@ -17,6 +17,7 @@ public class WebSocketController {
     public void sendMessage(String message){
         System.out.println(message);
         messagingTemplate.convertAndSend("/message",  message);
+
     }
 
     // when logged into the system, users will subscribe to their contact list
@@ -27,6 +28,14 @@ public class WebSocketController {
         messagingTemplate.convertAndSendToUser(
                 message.getContactid(),
                 "/queue/contacts",
+                message
+        );
+    }
+
+    @MessageMapping("/queue/workspace")
+    public void handleSubscribeWorkspace(@Payload Message message) throws Exception{
+        messagingTemplate.convertAndSend(
+                "/workspace",
                 message
         );
     }
