@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/auth")
 public class SecurityController {
 
-    final Cache authCahe;
+    final Cache authCache;
 
     @Autowired
     SecurityService securityService;
@@ -35,7 +35,7 @@ public class SecurityController {
 
     @Autowired
     public  SecurityController(CacheManager cacheManager){
-        this.authCahe = cacheManager.getCache("AuthCache");
+        this.authCache = cacheManager.getCache("AuthCache");
     }
 
 
@@ -69,21 +69,18 @@ public class SecurityController {
         return securityService.whoami(req);
     }
 
-    @PostMapping("/revoke/token")
-    public ResponseEntity<?> revokenToken(@RequestBody RevokeTokenDTO token){
-        securityService.revokeToken(token.getToken());
-        return new ResponseEntity<>("revoken token succeeded",HttpStatus.OK);
+    @DeleteMapping("/revoke/token")
+    public ResponseEntity<?> revokeToken(HttpServletRequest req){
+        securityService.revokeToken(req);
+        return new ResponseEntity<>("revoke token succeeded",HttpStatus.OK);
     }
-    @GetMapping("/demo")
-    public void demo(){
-        System.out.println("dmeo");
-    }
+
     @GetMapping("/token/message")
     public UUID getTokenMessage(){
 
         UUID websocketAuthToken = UUID.randomUUID();
         WebSocketAuthInfo webSocketAuthInfo = new WebSocketAuthInfo(websocketAuthToken);
-        authCahe.put(websocketAuthToken,webSocketAuthInfo);
+        authCache.put(websocketAuthToken,webSocketAuthInfo);
         return websocketAuthToken;
     }
 
