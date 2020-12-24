@@ -1,6 +1,7 @@
 package com.nuchat.capricorn.controller;
 
 import com.nuchat.capricorn.dto.CreateConversationDTO;
+import com.nuchat.capricorn.dto.ListFriendDTO;
 import com.nuchat.capricorn.model.Conversation;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.service.MessageService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -40,5 +42,9 @@ public class UserController {
         User receiver = securityService.search(conversationDTO.getReceiver());
         return new ResponseEntity<>(receiver.getId(), HttpStatus.OK);
 
+    }
+    @GetMapping("/list/friend")
+    public  ResponseEntity<?> getListFriend(HttpServletRequest req){
+        return new ResponseEntity<>(userService.getListFriend(req),HttpStatus.OK);
     }
 }

@@ -1,6 +1,5 @@
--- create function get list friend
-DROP FUNCTION get_list_friend();
-CREATE OR REPLACE FUNCTION get_list_friend()
+DROP FUNCTION get_list_friend;
+CREATE OR REPLACE FUNCTION get_list_friend(userId int)
   RETURNS TABLE (
 	  first_name varchar,
 	  last_name varchar,
@@ -20,6 +19,8 @@ BEGIN
    FROM user_contact
    INNER JOIN users
    ON user_contact.contact_id = users.id
-   WHERE user_id = 1;
+   WHERE user_id = userId;
 END
 $func$  LANGUAGE plpgsql;
+
+
