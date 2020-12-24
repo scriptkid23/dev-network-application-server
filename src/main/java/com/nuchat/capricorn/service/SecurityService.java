@@ -4,9 +4,11 @@ import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketAuthInfo;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.exception.CustomException;
+import com.nuchat.capricorn.model.Contacts;
 import com.nuchat.capricorn.model.RevokeToken;
 import com.nuchat.capricorn.model.Role;
 import com.nuchat.capricorn.model.User;
+import com.nuchat.capricorn.repository.ContactsRepository;
 import com.nuchat.capricorn.repository.RevokeTokenRepository;
 import com.nuchat.capricorn.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -32,6 +34,8 @@ public class SecurityService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ContactsRepository contactsRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -70,6 +74,8 @@ public class SecurityService {
             user.setCreate_at_(new Date());
             roles.add(Role.ROLE_MEMBER);user.setRoles(roles);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            Contacts contacts = modelMapper.map(user,Contacts.class);
+            contactsRepository.save(contacts);
             userRepository.save(user);
             return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
         } else {
