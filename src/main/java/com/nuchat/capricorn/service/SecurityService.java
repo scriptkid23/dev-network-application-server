@@ -67,7 +67,7 @@ public class SecurityService {
         if (!userRepository.existsByEmail(user.getEmail())) {
             user.setAvatar("https://storage-3t.herokuapp.com/uploads/avatar/016-unicorn.svg");
             List<Role> roles = new ArrayList<Role>();
-            user.setCreate_at(new Date());
+            user.setCreate_at_(new Date());
             roles.add(Role.ROLE_MEMBER);user.setRoles(roles);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
