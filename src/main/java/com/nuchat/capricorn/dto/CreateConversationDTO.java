@@ -5,12 +5,17 @@ import com.nuchat.capricorn.model.Participants;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class CreateConversationDTO {
 
-    private String receiver; // using email for get receiver detail;
+    private List<String> receiver; // using email for get receiver detail;
 
-    public String getReceiver() {
+    public List<String> getReceiver() {
         return receiver;
+    }
+
+    public void setReceiver(List<String> receiver) {
+        this.receiver = receiver;
     }
 }

@@ -22,6 +22,7 @@ public class Participants {
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
 
+    public  Participants(){}
     public Participants(ParticipantType type, Date created_at, User user, Conversation conversation) {
         this.type = type;
         this.created_at = created_at;
@@ -59,13 +60,5 @@ public class Participants {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Conversation getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
     }
 }

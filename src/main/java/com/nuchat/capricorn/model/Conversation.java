@@ -25,6 +25,7 @@ public class Conversation {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Conversation(){}
     public Conversation(String title, String channel_id, Date created_at, User user) {
         this.title = title;
         this.channel_id = channel_id;
@@ -95,4 +96,5 @@ public class Conversation {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

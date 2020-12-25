@@ -1,6 +1,6 @@
 package com.nuchat.capricorn.controller;
 
-import com.nuchat.capricorn.dto.Message;
+import com.nuchat.capricorn.dto.MessageWebSocketDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -23,20 +23,20 @@ public class WebSocketController {
     // when logged into the system, users will subscribe to their contact list
     // they will subscribe / contact /: id with id as their id
     // whatever the sender conversation they will receive will be
-    @MessageMapping("/contact/:id")
-    public void handleSubscribeContact(@Payload Message message) throws Exception{
-        messagingTemplate.convertAndSendToUser(
-                message.getContactid(),
-                "/queue/contacts",
-                message
-        );
-    }
+//    @MessageMapping("/contact/:id")
+//    public void handleSubscribeContact(@Payload MessageWebSocketDTO messageWebSocketDTO) throws Exception{
+//        messagingTemplate.convertAndSendToUser(
+//                messageWebSocketDTO.getContactid(),
+//                "/queue/contacts",
+//                messageWebSocketDTO
+//        );
+//    }
 
     @MessageMapping("/queue/workspace")
-    public void handleSubscribeWorkspace(@Payload Message message) throws Exception{
+    public void handleSubscribeWorkspace(@Payload MessageWebSocketDTO messageWebSocketDTO) throws Exception{
         messagingTemplate.convertAndSend(
                 "/workspace",
-                message
+                messageWebSocketDTO
         );
     }
 
