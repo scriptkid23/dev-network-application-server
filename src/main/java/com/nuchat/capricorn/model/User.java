@@ -45,6 +45,9 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
     private Collection<Conversation> conversations;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.ALL)
+    private Collection<Notification> notifications;
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -151,5 +154,13 @@ public class User {
 
     public void setUpdate_at_(Date update_at) {
         this.update_at = update_at;
+    }
+
+    public Collection<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Collection<Notification> notifications) {
+        this.notifications = notifications;
     }
 }
