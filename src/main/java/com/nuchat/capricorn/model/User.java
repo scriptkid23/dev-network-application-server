@@ -156,11 +156,15 @@ public class User {
         this.update_at = update_at;
     }
 
-    public Collection<Notification> getNotifications() {
-        return notifications;
-    }
+//    public Collection<Notification> getNotifications() {
+//        return notifications;
+//    }
 
     public void setNotifications(Collection<Notification> notifications) {
         this.notifications = notifications;
     }
+
+//    public Collection<UserContact> getUser_contact() {
+//        return user_contact;
+//    }
 }

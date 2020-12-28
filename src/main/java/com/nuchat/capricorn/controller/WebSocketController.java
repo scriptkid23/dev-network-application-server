@@ -1,6 +1,14 @@
 package com.nuchat.capricorn.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.dto.MessageWebSocketDTO;
+import com.nuchat.capricorn.dto.MessageWebSocketResponse;
+import com.nuchat.capricorn.model.Messages;
+import com.nuchat.capricorn.service.MessageService;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -11,12 +19,22 @@ import org.springframework.stereotype.Controller;
 public class WebSocketController {
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private ModelMapper modelMapper;
 
-    @MessageMapping("/send/message")
-    public void sendMessage(String message){
-        System.out.println(message);
-        messagingTemplate.convertAndSend("/message",  message);
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private MessageService messageService;
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
+    @MessageMapping("/chat")
+    public void processMessage(@Payload MessageWebSocketDTO messageWebSocketDTO){
+
+        logger.debug(messageWebSocketDTO.getMessage());
+        Messages message = messageService.sendMessage(messageWebSocketDTO);
+        MessageWebSocketResponse messageWebSocketResponse = modelMapper.map(message,MessageWebSocketResponse.class);
+        messagingTemplate.convertAndSendToUser(
+                messageWebSocketDTO.getChannelId(),
+                "/queue/messages",messageWebSocketResponse);
 
     }
 

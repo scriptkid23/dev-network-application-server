@@ -9,7 +9,7 @@ import com.nuchat.capricorn.model.User;
 import java.util.Date;
 
 public class MessageWebSocketDTO {
-
+    private String sender;
     private MessageType message_type;
     private String message;
     private String channelId;
@@ -36,5 +36,13 @@ public class MessageWebSocketDTO {
 
     public void setChannelId(String channelId) {
         this.channelId = channelId;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

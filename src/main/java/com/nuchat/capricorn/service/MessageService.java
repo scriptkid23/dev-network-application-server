@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,20 @@ public class MessageService {
     }
     public Conversation getConversationDetail(String channelId){
         return conversationRepository.getCoversationDetail(channelId);
+    }
+
+
+    public Messages sendMessage(MessageWebSocketDTO messageWebSocketDTO){
+        Conversation conversation = conversationRepository.getCoversationDetail(messageWebSocketDTO.getChannelId());
+        User user = userRepository.findByEmail(messageWebSocketDTO.getSender());
+        Messages messages = new Messages();
+        messages.setMessage(messageWebSocketDTO.getMessage());
+        messages.setMessage_type(MessageType.TEXT);
+        messages.setConversation(conversation);
+        messages.setCreated_at(new Date());
+        messages.setUser(user);
+        messagesRepository.save(messages);
+        return messages;
     }
     public Messages sendMessage(HttpServletRequest req, MessageWebSocketDTO message){
         Conversation conversation = conversationRepository.getCoversationDetail(message.getChannelId());
