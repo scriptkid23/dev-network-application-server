@@ -42,7 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/api/v1/auth/token/confirm").permitAll()
                 .antMatchers("/ws/**").permitAll()
-                .antMatchers("/info").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
