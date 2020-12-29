@@ -61,7 +61,7 @@ public class Conversation {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at_(Date created_at) {
         this.created_at = created_at;
     }
 
@@ -69,7 +69,7 @@ public class Conversation {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at_(Date updated_at) {
         this.updated_at = updated_at;
     }
 
@@ -77,7 +77,7 @@ public class Conversation {
         return participants;
     }
 
-    public void setParticipants(Collection<Participants> participants) {
+    public void setParticipants_(Collection<Participants> participants) {
         this.participants = participants;
     }
 
@@ -85,7 +85,7 @@ public class Conversation {
         return messages;
     }
 
-    public void setMessages(Collection<Messages> messages) {
+    public void setMessages_(Collection<Messages> messages) {
         this.messages = messages;
     }
 
@@ -93,7 +93,7 @@ public class Conversation {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser_(User user) {
         this.user = user;
     }
 
