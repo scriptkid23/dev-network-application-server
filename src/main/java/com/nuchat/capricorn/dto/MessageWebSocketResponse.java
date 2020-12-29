@@ -1,34 +1,24 @@
-package com.nuchat.capricorn.model;
+package com.nuchat.capricorn.dto;
+
+import com.nuchat.capricorn.model.Attachments;
+import com.nuchat.capricorn.model.Conversation;
+import com.nuchat.capricorn.model.MessageType;
+import com.nuchat.capricorn.model.User;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
-public class Messages {
+public class MessageWebSocketResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String guid;
-
-    @Enumerated(EnumType.ORDINAL)
     private MessageType message_type;
-
     private String message;
     private Date created_at;
-
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "messages",cascade = CascadeType.ALL)
     private Collection<Attachments> attachments;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "conversation_id")
     private Conversation conversation;
 
     public Integer getId() {
@@ -63,16 +53,12 @@ public class Messages {
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
+    public Date getCreated_at() {
+        return created_at;
     }
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
     }
 
     public Collection<Attachments> getAttachments() {
@@ -83,15 +69,13 @@ public class Messages {
         this.attachments = attachments;
     }
 
-
+    public User getUser() {
+        return user;
+    }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
-    }
 
 }
