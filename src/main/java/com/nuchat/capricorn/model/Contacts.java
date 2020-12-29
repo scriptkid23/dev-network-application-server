@@ -15,6 +15,9 @@ public class Contacts {
     private String first_name;
     private String last_name;
     private String phone;
+    private String avatar;
+    private boolean is_present;
+
 
     @OneToMany(mappedBy = "primaryKey.contacts",cascade = CascadeType.ALL)
     private Collection<UserContact> user_contacts;
@@ -59,5 +62,21 @@ public class Contacts {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public boolean isIs_present() {
+        return is_present;
+    }
+
+    public void setIs_present(boolean is_present) {
+        this.is_present = is_present;
     }
 }

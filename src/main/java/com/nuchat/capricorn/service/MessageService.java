@@ -2,6 +2,7 @@ package com.nuchat.capricorn.service;
 
 import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketConfig;
+import com.nuchat.capricorn.dto.ListMessageLogDTO;
 import com.nuchat.capricorn.dto.MessageWebSocketDTO;
 import com.nuchat.capricorn.model.*;
 import com.nuchat.capricorn.repository.ConversationRepository;
@@ -82,5 +83,10 @@ public class MessageService {
         messages.setUser(user);
         messagesRepository.save(messages);
         return  messages;
+    }
+    public List<ListMessageLogDTO> getListMessageLog(HttpServletRequest req){
+        return conversationRepository.getListMessageLog(
+                securityService.whoami(req).getId()
+        );
     }
 }

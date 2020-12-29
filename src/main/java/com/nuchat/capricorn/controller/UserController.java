@@ -65,4 +65,14 @@ public class UserController {
         messageService.sendMessage(req,messageWebSocketDTO);
         return new ResponseEntity<>(messageWebSocketDTO,HttpStatus.OK);
     }
+
+    @GetMapping("/check/member")
+    public  ResponseEntity<?> checkMember(@RequestParam String channelId){
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
+
+    @GetMapping("/message/log")
+    public ResponseEntity<?> getListMessageLog(HttpServletRequest req){
+        return new ResponseEntity<>(messageService.getListMessageLog(req),HttpStatus.OK);
+    }
 }
