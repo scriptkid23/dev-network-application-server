@@ -25,7 +25,9 @@ public class WebSocketController {
     private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private MessageService messageService;
+
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
+
     @MessageMapping("/chat")
     public void processMessage(@Payload MessageWebSocketDTO messageWebSocketDTO){
 
@@ -38,6 +40,10 @@ public class WebSocketController {
 
     }
 
+    @MessageMapping("/notification")
+    public void processNotification(){
+
+    }
     // when logged into the system, users will subscribe to their contact list
     // they will subscribe / contact /: id with id as their id
     // whatever the sender conversation they will receive will be
@@ -50,13 +56,7 @@ public class WebSocketController {
 //        );
 //    }
 
-    @MessageMapping("/queue/workspace")
-    public void handleSubscribeWorkspace(@Payload MessageWebSocketDTO messageWebSocketDTO) throws Exception{
-        messagingTemplate.convertAndSend(
-                "/workspace",
-                messageWebSocketDTO
-        );
-    }
+
 
 
 
