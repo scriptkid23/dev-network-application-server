@@ -4,11 +4,9 @@ import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.dto.ListMessageLogDTO;
 import com.nuchat.capricorn.dto.MessageWebSocketDTO;
+import com.nuchat.capricorn.dto.NotificationWebSocketDTO;
 import com.nuchat.capricorn.model.*;
-import com.nuchat.capricorn.repository.ConversationRepository;
-import com.nuchat.capricorn.repository.MessagesRepository;
-import com.nuchat.capricorn.repository.ParticipantsRepository;
-import com.nuchat.capricorn.repository.UserRepository;
+import com.nuchat.capricorn.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,9 @@ public class MessageService {
     ParticipantsRepository participantsRepository;
     @Autowired
     MessagesRepository messagesRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
     public Conversation createConversation(HttpServletRequest req, List<User> receiver){
@@ -88,5 +89,12 @@ public class MessageService {
         return conversationRepository.getListMessageLog(
                 securityService.whoami(req).getId()
         );
+    }
+
+    public Notification sendNotification(NotificationWebSocketDTO payload){
+        User receiver = userRepository.findByEmail(payload.getEmail());
+        Notification notification = new Notification(receiver,false,payload.getSender(),payload.getInvitation_message());
+        notificationRepository.save(notification);
+        return notification;
     }
 }
