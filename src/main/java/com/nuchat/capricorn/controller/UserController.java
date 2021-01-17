@@ -1,5 +1,6 @@
 package com.nuchat.capricorn.controller;
 
+import com.nuchat.capricorn.dto.AcceptFriendRequestDTO;
 import com.nuchat.capricorn.dto.CreateConversationDTO;
 import com.nuchat.capricorn.dto.ListFriendDTO;
 import com.nuchat.capricorn.dto.MessageWebSocketDTO;
@@ -71,6 +72,17 @@ public class UserController {
         return new ResponseEntity<>(null,HttpStatus.OK);
     }
 
+    @GetMapping("/notifications")
+    public ResponseEntity<?> getListNotification(HttpServletRequest req){
+        return new ResponseEntity<>(messageService.getListNotification(req),HttpStatus.OK);
+    }
+    @PostMapping("/accept/friend")
+    public ResponseEntity<?> acceptFriendRequest(
+            HttpServletRequest req,
+            @RequestBody AcceptFriendRequestDTO payload){
+        messageService.acceptFriendRequest(req,payload);
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
     @GetMapping("/message/log")
     public ResponseEntity<?> getListMessageLog(HttpServletRequest req){
         return new ResponseEntity<>(messageService.getListMessageLog(req),HttpStatus.OK);

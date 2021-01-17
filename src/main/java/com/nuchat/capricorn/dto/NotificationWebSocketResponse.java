@@ -1,12 +1,21 @@
 package com.nuchat.capricorn.dto;
 
 public class NotificationWebSocketResponse {
+    private Integer id;
     private boolean is_confirm;
     private String sender_from;
     private String content;
 
     public boolean isIs_confirm() {
         return is_confirm;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setIs_confirm(boolean is_confirm) {

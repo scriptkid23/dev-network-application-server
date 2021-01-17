@@ -16,6 +16,8 @@ public class Notification {
     private boolean is_confirm;
     private String sender_from;
 
+    public Notification() { }
+
     private String content;
 
     public Integer getId() {

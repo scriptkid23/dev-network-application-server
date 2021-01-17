@@ -2,11 +2,10 @@ package com.nuchat.capricorn.service;
 
 import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketConfig;
-import com.nuchat.capricorn.dto.ListMessageLogDTO;
-import com.nuchat.capricorn.dto.MessageWebSocketDTO;
-import com.nuchat.capricorn.dto.NotificationWebSocketDTO;
+import com.nuchat.capricorn.dto.*;
 import com.nuchat.capricorn.model.*;
 import com.nuchat.capricorn.repository.*;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class MessageService {
-
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -35,6 +36,8 @@ public class MessageService {
     MessagesRepository messagesRepository;
     @Autowired
     NotificationRepository notificationRepository;
+    @Autowired
+    UserContactRepository userContactRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
@@ -91,10 +94,42 @@ public class MessageService {
         );
     }
 
+    public List<ListNotificationDTO> getListNotification(HttpServletRequest req){
+            return notificationRepository.getListNotification(
+                    securityService.whoami(req).getId()
+            );
+    }
     public Notification sendNotification(NotificationWebSocketDTO payload){
         User receiver = userRepository.findByEmail(payload.getEmail());
         Notification notification = new Notification(receiver,false,payload.getSender(),payload.getInvitation_message());
         notificationRepository.save(notification);
         return notification;
     }
+
+    public void acceptFriendRequest(HttpServletRequest req,AcceptFriendRequestDTO payload){
+        UserContact sender = new UserContact();
+        UserContact receiver = new UserContact();
+        User user_sender = userRepository.findByEmail(payload.getSender_from());
+        User user_receiver = securityService.whoami(req);
+
+        // Insert sender to database with table user_contact
+        sender.setFirst_name(user_receiver.getFirst_name());
+        sender.setLast_name(user_receiver.getLast_name());
+        sender.setUser(user_sender);
+        sender.setContact(modelMapper.map(user_receiver,Contacts.class));
+        userContactRepository.save(sender);
+
+        // continues
+        receiver.setFirst_name(user_sender.getFirst_name());
+        receiver.setLast_name(user_sender.getLast_name());
+        receiver.setUser(user_receiver);
+        receiver.setContact(modelMapper.map(user_sender,Contacts.class));
+        userContactRepository.save(receiver);
+
+       Optional<Notification> notification = notificationRepository.findById(payload.getId());
+       notificationRepository.delete(notification.get());
+
+
+    }
+
 }

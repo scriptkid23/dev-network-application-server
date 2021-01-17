@@ -50,7 +50,7 @@ public class WebSocketController {
         NotificationWebSocketResponse notificationWebSocketResponse = modelMapper.map(notification,NotificationWebSocketResponse.class);
 
         messagingTemplate.convertAndSendToUser(
-                notification.getUser().getEmail(),
+                notification.getUser().getId().toString(),
                 "/queue/notifications",notificationWebSocketResponse);
 
 
