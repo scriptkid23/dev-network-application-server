@@ -16,6 +16,8 @@ public class Notification {
     private boolean is_confirm;
     private String sender_from;
 
+    public Notification() { }
+
     private String content;
 
     public Integer getId() {
@@ -34,7 +36,9 @@ public class Notification {
         this.is_confirm = is_confirm;
     }
 
-
+    public User getUser() {
+        return user;
+    }
 
     public String getContent() {
         return content;
@@ -50,5 +54,13 @@ public class Notification {
 
     public void setSender_from(String sender_from) {
         this.sender_from = sender_from;
+    }
+
+
+    public Notification(User user, boolean is_confirm, String sender_from, String content) {
+        this.user = user;
+        this.is_confirm = is_confirm;
+        this.sender_from = sender_from;
+        this.content = content;
     }
 }

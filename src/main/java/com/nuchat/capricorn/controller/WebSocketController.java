@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.dto.MessageWebSocketDTO;
 import com.nuchat.capricorn.dto.MessageWebSocketResponse;
+import com.nuchat.capricorn.dto.NotificationWebSocketDTO;
+import com.nuchat.capricorn.dto.NotificationWebSocketResponse;
 import com.nuchat.capricorn.model.Messages;
+import com.nuchat.capricorn.model.Notification;
 import com.nuchat.capricorn.service.MessageService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -25,7 +28,9 @@ public class WebSocketController {
     private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private MessageService messageService;
+
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
+
     @MessageMapping("/chat")
     public void processMessage(@Payload MessageWebSocketDTO messageWebSocketDTO){
 
@@ -35,6 +40,19 @@ public class WebSocketController {
         messagingTemplate.convertAndSendToUser(
                 messageWebSocketDTO.getChannelId(),
                 "/queue/messages",messageWebSocketResponse);
+
+    }
+
+    @MessageMapping("/notification")
+    public void processNotification(@Payload NotificationWebSocketDTO payload){
+
+        Notification notification = messageService.sendNotification(payload);
+        NotificationWebSocketResponse notificationWebSocketResponse = modelMapper.map(notification,NotificationWebSocketResponse.class);
+
+        messagingTemplate.convertAndSendToUser(
+                notification.getUser().getId().toString(),
+                "/queue/notifications",notificationWebSocketResponse);
+
 
     }
 
@@ -50,13 +68,7 @@ public class WebSocketController {
 //        );
 //    }
 
-    @MessageMapping("/queue/workspace")
-    public void handleSubscribeWorkspace(@Payload MessageWebSocketDTO messageWebSocketDTO) throws Exception{
-        messagingTemplate.convertAndSend(
-                "/workspace",
-                messageWebSocketDTO
-        );
-    }
+
 
 
 
