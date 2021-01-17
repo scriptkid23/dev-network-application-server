@@ -22,7 +22,13 @@ public class Contacts {
     @OneToMany(mappedBy = "primaryKey.contacts",cascade = CascadeType.ALL)
     private Collection<UserContact> user_contacts;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Date getCreate_at() {
         return create_at;
