@@ -1,14 +1,12 @@
 package com.nuchat.capricorn.controller;
 
-import com.nuchat.capricorn.dto.AcceptFriendRequestDTO;
-import com.nuchat.capricorn.dto.CreateConversationDTO;
-import com.nuchat.capricorn.dto.ListFriendDTO;
-import com.nuchat.capricorn.dto.MessageWebSocketDTO;
+import com.nuchat.capricorn.dto.*;
 import com.nuchat.capricorn.model.Conversation;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.service.MessageService;
 import com.nuchat.capricorn.service.SecurityService;
 import com.nuchat.capricorn.service.UserService;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +27,10 @@ public class UserController {
     @Autowired
     SecurityService securityService;
     @PutMapping("/update")
-    public void updateProfile(){
+    public ResponseEntity<?> updateProfile(HttpServletRequest req, @RequestBody EditProfileRequestDTO payload){
+        userService.editProfile(req,payload);
+        return new ResponseEntity<>(new MessageDTO(HttpStatus.OK,"Update profile succeeded"),HttpStatus.OK);
+
 
     }
     @GetMapping("/profile/{id}")
@@ -87,4 +88,5 @@ public class UserController {
     public ResponseEntity<?> getListMessageLog(HttpServletRequest req){
         return new ResponseEntity<>(messageService.getListMessageLog(req),HttpStatus.OK);
     }
+
 }

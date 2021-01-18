@@ -101,4 +101,14 @@ public class SecurityController {
             return new ResponseEntity<>(new MessageDTO(HttpStatus.UNPROCESSABLE_ENTITY,e.getMessage()),HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+    @PostMapping("/reset/password")
+    public ResponseEntity<?> resetPassword(HttpServletRequest req,@RequestBody ResetPasswordRequestDTO payload){
+        try {
+            securityService.resetPassword(req,payload);
+            return new ResponseEntity<>(new MessageDTO(HttpStatus.OK,"Reset password succeeded"),HttpStatus.OK);
+        }
+        catch (CustomException e){
+            return new ResponseEntity<>(new MessageDTO(HttpStatus.BAD_REQUEST,e.getMessage()),HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -1,10 +1,13 @@
 package com.nuchat.capricorn.service;
 
+import com.nuchat.capricorn.dto.EditProfileRequestDTO;
 import com.nuchat.capricorn.dto.ListFriendDTO;
 import com.nuchat.capricorn.dto.ProfileDTO;
 import com.nuchat.capricorn.dto.UserContactDTO;
+import com.nuchat.capricorn.model.Contacts;
 import com.nuchat.capricorn.model.User;
 import com.nuchat.capricorn.model.UserContact;
+import com.nuchat.capricorn.repository.ContactsRepository;
 import com.nuchat.capricorn.repository.UserContactRepository;
 import com.nuchat.capricorn.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,15 +31,21 @@ public class UserService {
     UserContactRepository userContactRepository;
 
     @Autowired
+    ContactsRepository contactsRepository;
+
+    @Autowired
     SecurityService securityService;
 
-    private static final Logger logger = LoggerFactory.getLogger(SendEmailService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     ModelMapper modelMapper;
     public ProfileDTO getProfile(Integer id){
+
         Optional<User> user = userRepository.findById(id);
-        return modelMapper.map(user,ProfileDTO.class);
+        logger.info(id.toString());
+        logger.info(user.get().getFirst_name());
+        return modelMapper.map(user.get(),ProfileDTO.class);
     }
 
     public List<ListFriendDTO> getListFriend(HttpServletRequest req){
@@ -43,5 +53,18 @@ public class UserService {
         List<ListFriendDTO> listFriend = userContactRepository.getListFriend(user.getId());
 
         return listFriend;
+    }
+    public void editProfile(HttpServletRequest req, EditProfileRequestDTO payload){
+        User user = securityService.whoami(req);
+        user.setFirst_name(payload.getFirst_name());
+        user.setLast_name(payload.getLast_name());
+        user.setBio(payload.getBio());
+        user.setAvatar(payload.getAvatar());
+        user.setUpdate_at_(new Date());
+
+        Contacts contacts = modelMapper.map(user,Contacts.class);
+        userRepository.save(user);
+        contactsRepository.save(contacts);
+
     }
 }
