@@ -3,6 +3,7 @@ package com.nuchat.capricorn.service;
 import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketAuthInfo;
 import com.nuchat.capricorn.config.WebSocketConfig;
+import com.nuchat.capricorn.dto.ResetPasswordRequestDTO;
 import com.nuchat.capricorn.exception.CustomException;
 import com.nuchat.capricorn.model.Contacts;
 import com.nuchat.capricorn.model.RevokeToken;
@@ -113,6 +114,15 @@ public class SecurityService {
         RevokeToken revokeToken = new RevokeToken();
         revokeToken.setToken(jwtTokenProvider.resolveToken(req));
         revokeTokenRepository.save(revokeToken);
+    }
+    public void resetPassword(HttpServletRequest req, ResetPasswordRequestDTO payload){
+
+        if(!payload.getPassword().equals(payload.getCfpassword())){
+            throw new CustomException("Password and Confirm Password not match",HttpStatus.BAD_REQUEST);
+        }
+        User user = whoami(req);
+        user.setPassword(passwordEncoder.encode(payload.getPassword()));
+        userRepository.save(user);
     }
 
 }
