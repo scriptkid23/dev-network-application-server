@@ -115,3 +115,84 @@ CREATE OR REPLACE FUNCTION get_list_message_log(userId int)
 	END
 
 $func$  LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION get_list_last_message_log(userId int)
+    RETURNS 	TABLE(
+                        id int,
+                        created_at timestamp,
+                        message varchar,
+                        message_type int,
+                        conversation_id int,
+                        user_id int,
+                        channel_id varchar,
+                        title varchar,
+                        avatar varchar,
+                        bio varchar,
+                        first_name varchar,
+                        last_name varchar
+                    )AS
+$func$
+BEGIN
+
+    CREATE TEMP TABLE TableLastMessage(
+          id int,
+          created_at timestamp,
+          guid varchar,
+          message varchar,
+          message_type int,
+          conversation_id int,
+          user_id int
+    );
+    INSERT INTO TableLastMessage
+    SELECT * FROM messages WHERE
+            messages.created_at in (SELECT MAX(messages.created_at)
+                                    FROM participants
+                                             INNER JOIN messages
+                                                        ON participants.conversation_id = messages.conversation_id
+                                    WHERE participants.user_id = userId
+                                    GROUP BY (participants.conversation_id));
+    RETURN QUERY
+        SELECT
+            TableLastMessage.id,
+            TableLastMessage.created_at,
+            TableLastMessage.message,
+            TableLastMessage.message_type,
+            TableLastMessage.conversation_id,
+            TableLastMessage.user_id,
+            conversation.channel_id,
+            conversation.title,
+            users.avatar,
+            users.bio,
+            users.first_name,
+            users.last_name
+
+        FROM
+            (TableLastMessage inner join conversation on TableLastMessage.conversation_id = conversation.id)
+                inner join users on TableLastMessage.user_id = users.id;
+    DROP TABLE TableLastMessage;
+END
+$func$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_member_of_conversation(conversationId int)
+    RETURNS TABLE(
+                     id int,
+                     avatar varchar,
+                     email varchar,
+                     first_name varchar,
+                     last_name varchar,
+                     is_present boolean
+                 )
+AS
+$func$
+BEGIN
+    RETURN QUERY
+        SELECT
+            users.id,users.avatar,users.email, users.first_name,users.last_name,users.is_present
+        FROM
+            (conversation INNER JOIN participants ON conversation.id = participants.conversation_id)
+                INNER JOIN users ON participants.user_id = users.id
+        WHERE conversation.id = conversationId;
+END
+$func$  LANGUAGE plpgsql;

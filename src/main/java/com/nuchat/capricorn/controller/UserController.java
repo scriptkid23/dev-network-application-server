@@ -88,5 +88,9 @@ public class UserController {
     public ResponseEntity<?> getListMessageLog(HttpServletRequest req){
         return new ResponseEntity<>(messageService.getListMessageLog(req),HttpStatus.OK);
     }
+    @GetMapping("/message/group/log")
+    public  ResponseEntity<?> getLisMessageGroupLog(HttpServletRequest req){
+        return  new ResponseEntity<>(messageService.getListMessageGroupLog(req),HttpStatus.OK);
+    }
 
 }
