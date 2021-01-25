@@ -12,7 +12,7 @@ import java.util.Date;
 public class MessageWebSocketResponse {
 
     private Integer id;
-
+    private String channel_id;
     private String guid;
     private MessageType message_type;
     private String message;
@@ -20,6 +20,14 @@ public class MessageWebSocketResponse {
     private Collection<Attachments> attachments;
     private User user;
     private Conversation conversation;
+
+    public String getChannel_id() {
+        return channel_id;
+    }
+
+    public void setChannel_id(String channel_id) {
+        this.channel_id = channel_id;
+    }
 
     public Integer getId() {
         return id;
