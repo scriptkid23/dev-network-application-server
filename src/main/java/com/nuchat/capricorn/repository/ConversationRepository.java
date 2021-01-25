@@ -30,4 +30,5 @@ public interface ConversationRepository extends CrudRepository<Conversation,Inte
             "WHERE conversation.channel_id =:id")
     List<ListUserIdOfConversation> getListUserIdOfConversation(@Param("id") String channelId);
 
+
 }

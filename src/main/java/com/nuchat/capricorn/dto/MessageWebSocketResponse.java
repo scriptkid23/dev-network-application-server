@@ -8,6 +8,7 @@ import com.nuchat.capricorn.model.User;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class MessageWebSocketResponse {
 
@@ -19,7 +20,9 @@ public class MessageWebSocketResponse {
     private Date created_at;
     private Collection<Attachments> attachments;
     private User user;
+    private List<MemberOfConversationDTO> member;
     private Conversation conversation;
+    private String title;
 
     public String getChannel_id() {
         return channel_id;
@@ -85,5 +88,19 @@ public class MessageWebSocketResponse {
         this.user = user;
     }
 
+    public List<MemberOfConversationDTO> getMember() {
+        return member;
+    }
 
+    public void setMember(List<MemberOfConversationDTO> member) {
+        this.member = member;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

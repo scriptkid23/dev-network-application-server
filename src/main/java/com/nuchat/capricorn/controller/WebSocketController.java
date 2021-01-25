@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.dto.*;
+import com.nuchat.capricorn.model.Conversation;
 import com.nuchat.capricorn.model.Messages;
 import com.nuchat.capricorn.model.Notification;
 import com.nuchat.capricorn.repository.ConversationRepository;
@@ -39,8 +40,11 @@ public class WebSocketController {
 
         logger.debug(messageWebSocketDTO.getMessage());
         Messages message = messageService.sendMessage(messageWebSocketDTO);
+        Conversation conversation = conversationRepository.getCoversationDetail(messageWebSocketDTO.getChannelId());
         MessageWebSocketResponse messageWebSocketResponse = modelMapper.map(message,MessageWebSocketResponse.class);
         messageWebSocketResponse.setChannel_id(messageWebSocketDTO.getChannelId());
+        messageWebSocketResponse.setMember(conversationRepository.getMemberOfConversation(conversation.getId()));
+        messageWebSocketResponse.setTitle(conversation.getTitle());
         logger.debug(messageWebSocketDTO.getChannelId());
         List<ListUserIdOfConversation> listUserId = conversationRepository.getListUserIdOfConversation((messageWebSocketDTO.getChannelId()));
         for (ListUserIdOfConversation userId:listUserId
