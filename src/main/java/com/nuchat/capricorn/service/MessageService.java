@@ -102,10 +102,7 @@ public class MessageService {
                 result) {
             List<MemberOfConversationDTO> listMemberOfConversation = conversationRepository.getMemberOfConversation(list.getConversation_id());
             MemberOfConversationImpl[] result_ = modelMapper.map(listMemberOfConversation,MemberOfConversationImpl[].class);
-            for (MemberOfConversationImpl value:result_
-                 ) {
-                list.setMember(Arrays.asList(result_));
-            }
+            list.setMember(Arrays.asList(result_));
         }
         return Arrays.asList(result);
     }
