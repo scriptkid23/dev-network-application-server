@@ -1,13 +1,13 @@
 package com.nuchat.capricorn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.nuchat.capricorn.config.WebSocketConfig;
-import com.nuchat.capricorn.dto.MessageWebSocketDTO;
-import com.nuchat.capricorn.dto.MessageWebSocketResponse;
-import com.nuchat.capricorn.dto.NotificationWebSocketDTO;
-import com.nuchat.capricorn.dto.NotificationWebSocketResponse;
+import com.nuchat.capricorn.dto.*;
+import com.nuchat.capricorn.model.Conversation;
 import com.nuchat.capricorn.model.Messages;
 import com.nuchat.capricorn.model.Notification;
+import com.nuchat.capricorn.repository.ConversationRepository;
 import com.nuchat.capricorn.service.MessageService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -17,6 +17,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 @Controller
 public class WebSocketController {
@@ -28,6 +30,8 @@ public class WebSocketController {
     private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private ConversationRepository conversationRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
 
@@ -36,7 +40,21 @@ public class WebSocketController {
 
         logger.debug(messageWebSocketDTO.getMessage());
         Messages message = messageService.sendMessage(messageWebSocketDTO);
+        Conversation conversation = conversationRepository.getCoversationDetail(messageWebSocketDTO.getChannelId());
         MessageWebSocketResponse messageWebSocketResponse = modelMapper.map(message,MessageWebSocketResponse.class);
+        messageWebSocketResponse.setChannel_id(messageWebSocketDTO.getChannelId());
+        messageWebSocketResponse.setMember(conversationRepository.getMemberOfConversation(conversation.getId()));
+        messageWebSocketResponse.setTitle(conversation.getTitle());
+        logger.debug(messageWebSocketDTO.getChannelId());
+        List<ListUserIdOfConversation> listUserId = conversationRepository.getListUserIdOfConversation((messageWebSocketDTO.getChannelId()));
+        for (ListUserIdOfConversation userId:listUserId
+        ) {
+            logger.info(userId.getUser_id().toString());
+            messagingTemplate.convertAndSendToUser(
+                    userId.getUser_id().toString(),
+                    "/queue/chats",messageWebSocketResponse
+            );
+        }
         messagingTemplate.convertAndSendToUser(
                 messageWebSocketDTO.getChannelId(),
                 "/queue/messages",messageWebSocketResponse);

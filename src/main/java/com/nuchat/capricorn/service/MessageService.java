@@ -1,5 +1,6 @@
 package com.nuchat.capricorn.service;
 
+import com.google.gson.Gson;
 import com.nuchat.capricorn.config.JwtTokenProvider;
 import com.nuchat.capricorn.config.WebSocketConfig;
 import com.nuchat.capricorn.dto.*;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class MessageService {
@@ -39,7 +37,7 @@ public class MessageService {
     @Autowired
     UserContactRepository userContactRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
     public Conversation createConversation(HttpServletRequest req, List<User> receiver){
         User personCreateConversation = securityService.whoami(req);
@@ -92,6 +90,21 @@ public class MessageService {
         return conversationRepository.getListMessageLog(
                 securityService.whoami(req).getId()
         );
+    }
+    public List<ResponseListMessageLogDTO> getListMessageGroupLog(HttpServletRequest req){
+        List<ListMessageLogGroupDTO> listMessageLogGroup = conversationRepository.getListMessageLogGroup(
+                securityService.whoami(req).getId()
+        );
+//        Gson gson = new Gson();
+//        logger.info(gson.toJson(listMessageLogGroup));
+        ResponseListMessageLogDTO[] result = modelMapper.map(listMessageLogGroup,ResponseListMessageLogDTO[].class);
+        for (ResponseListMessageLogDTO list :
+                result) {
+            List<MemberOfConversationDTO> listMemberOfConversation = conversationRepository.getMemberOfConversation(list.getConversation_id());
+            MemberOfConversationImpl[] result_ = modelMapper.map(listMemberOfConversation,MemberOfConversationImpl[].class);
+            list.setMember(Arrays.asList(result_));
+        }
+        return Arrays.asList(result);
     }
 
     public List<ListNotificationDTO> getListNotification(HttpServletRequest req){
