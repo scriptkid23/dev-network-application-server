@@ -60,11 +60,14 @@ public class UserService {
         user.setLast_name(payload.getLast_name());
         user.setBio(payload.getBio());
         user.setAvatar(payload.getAvatar());
+        user.setPhone_number(payload.getPhone_number());
         user.setUpdate_at_(new Date());
-
-        Contacts contacts = modelMapper.map(user,Contacts.class);
         userRepository.save(user);
+        Contacts contacts = contactsRepository.findByEmail(user.getEmail());
+        contacts.setLast_name(payload.getLast_name());
+        contacts.setFirst_name(payload.getFirst_name());
+        contacts.setAvatar(payload.getAvatar());
+        contacts.setPhone(payload.getPhone_number());
         contactsRepository.save(contacts);
-
     }
 }
